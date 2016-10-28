@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="RigourTech.Tennisball.Weight.PaintPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+              xmlns:local="clr-namespace:InkCanvasTest"
+              xmlns:sys="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+             mc:Ignorable="d" Height="400" Width="600">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="EditModel" MethodName="GetValues"
+         ObjectType="{x:Type sys:InkCanvasEditingMode}" >
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="sys:InkCanvasEditingMode" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="DrawType" MethodName="GetValues"
+         ObjectType="{x:Type local:DrawTypeEum}" >
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:DrawTypeEum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <Style x:Key="RadioButtonList" TargetType="{x:Type ListBox}">
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type ListBoxItem}" >
+                        <Setter Property="Margin" Value="2" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border Background="Transparent">
+
+                                        <RadioButton Focusable="False"
+
+                                         IsHitTestVisible="False"
+
+                                           IsChecked="{TemplateBinding IsSelected}">
+
+                                            <ContentPresenter />
+
+                                        </RadioButton>
+
+                                    </Border>
+
+                                </ControlTemplate>
+
+                            </Setter.Value>
+
+                        </Setter>
+
+                    </Style>
+
+                </Setter.Value>
+
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="180"/>
+        </Grid.ColumnDefinitions>
+        <local:CustomInkCanvas EditingMode="{Binding Path=SelectedItem,ElementName=editSource}"  Background="Transparent" x:Name="test" DrawType="{Binding Path=SelectedItem,ElementName=DrawSource}"
+            >
+            <InkCanvas.DefaultDrawingAttributes >
+                <DrawingAttributes Color="Red" Width="2" Height="2"/>
+            </InkCanvas.DefaultDrawingAttributes>
+        </local:CustomInkCanvas>
+
+        <GroupBox Header="形状" Grid.Row="1" Grid.ColumnSpan="2" >
+            <ListBox x:Name="DrawSource" ItemsSource="{Binding Source={StaticResource DrawType}}" Style="{StaticResource RadioButtonList}" SelectedIndex="0" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ListBox>
+        </GroupBox>
+
+        <GroupBox Header="操作" Grid.Column="1">
+            <ListBox x:Name="editSource" ItemsSource="{Binding Source={StaticResource EditModel}}" Style="{StaticResource RadioButtonList}" SelectedIndex="0"  />
+        </GroupBox>
+    </Grid>
+</UserControl>
